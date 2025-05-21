@@ -20,12 +20,23 @@ public class PlayerController : MonoBehaviour
     public float lookSensitivity;
     private Vector2 mouseDelta;
 
+    [Header("Dash")]
+    public float dashForce = 20f;
+    public float dashDuration = 0.2f;
+    public bool isDashing = false;
+    private Vector3 dashDir;
+
     public float jumpPower;
 
     private Rigidbody rb;
 
     public bool CanLook = true;
     public Action inventroy;
+
+    [Header("Hanging")]
+    public LedgeDetector LedgeDetector;
+    private bool isHanging = false;
+    public Transform ledgeGrabPoint; // 손 위치 기준 (선택적)
 
     private void Awake()
     {
@@ -38,9 +49,11 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
+
     // Update is called once per frame
     void FixedUpdate()
     {
+        if(!isHanging)
         Move();
     }
 
@@ -89,12 +102,31 @@ public class PlayerController : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
-       if(context.phase == InputActionPhase.Started && IsGround())
-       {
-           rb.AddForce(Vector2.up * jumpPower, ForceMode.Impulse);
-       }
+        if (isHanging)
+        {
+            DropFromLedge();
+        }
+        else if (IsGround())
+        {
+            rb.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+        }
     }
 
+    private void DropFromLedge()
+    {
+        transform.SetParent(null); 
+
+        rb.useGravity = true;
+        rb.velocity = Vector3.zero;
+
+        Vector3 pushDir = transform.forward * -1f; 
+        transform.position += pushDir * 0.2f;
+
+
+        rb.AddForce(Vector3.up * 5f + pushDir * 2f, ForceMode.Impulse);
+
+        isHanging = false;
+    }
 
     bool IsGround()
     {
@@ -137,4 +169,53 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = toggle ? CursorLockMode.None : CursorLockMode.Locked;
         CanLook = !toggle;
     }
+
+
+    public void OnDash(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started && !isDashing)
+        {
+            StartCoroutine(DashForce());
+        }
+    }
+
+    IEnumerator DashForce()
+    {
+        isDashing = true;
+
+        rb.velocity = Vector3.zero;
+
+
+        rb.AddForce(transform.forward * dashForce, ForceMode.Impulse);
+
+        yield return new WaitForSeconds(dashDuration);
+
+
+        isDashing = false;
+    }
+
+    public void OnLedge(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started && !isHanging && LedgeDetector.ledgeAvailable)
+        {
+            Vector3 ledgePoint = LedgeDetector.ledgePoint;
+            Vector3 wallForward = LedgeDetector.ledgeNormal;
+            Transform wallTransform = LedgeDetector.ledgeTransform;
+
+
+            isHanging = true;
+            rb.velocity = Vector3.zero;
+            rb.useGravity = false;
+
+            Vector3 hangPos = ledgePoint - wallForward.normalized;
+            transform.position = hangPos;
+
+            transform.SetParent(wallTransform, true);
+    
+        }
+    }
+
+
+
+
 }

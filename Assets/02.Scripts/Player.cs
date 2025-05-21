@@ -10,6 +10,8 @@ public class Player : MonoBehaviour
     public ItemData data;
     public Action addItem;
 
+
+
     public Transform dropPos;
     private void Awake()
     {
