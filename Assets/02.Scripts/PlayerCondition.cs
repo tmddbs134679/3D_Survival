@@ -34,4 +34,15 @@ public class PlayerCondition : MonoBehaviour
     {
         Debug.Log("Á×À½");
     }
+
+    public void Heal(float hungerHealth)
+    {
+        health.Add(hungerHealth);
+    }
+
+
+    public void Eat(float hungerHealth)
+    {
+        hunger.Add(hungerHealth);
+    }
 }

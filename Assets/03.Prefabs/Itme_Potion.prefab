@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7969722694719623543}
   - component: {fileID: 3245999323618360793}
   - component: {fileID: 7957646964131820307}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,8 @@ GameObject:
   - component: {fileID: 450603275227248581}
   - component: {fileID: 4082277563870815952}
   - component: {fileID: 5024638075489365208}
-  m_Layer: 0
+  - component: {fileID: 7693695206604922478}
+  m_Layer: 7
   m_Name: Itme_Potion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -165,3 +166,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &7693695206604922478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6822817922580347735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d5904a63ce528443be8740bc5d2b3c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: 85fef31b88497494aa6a36bafe659ff7, type: 2}

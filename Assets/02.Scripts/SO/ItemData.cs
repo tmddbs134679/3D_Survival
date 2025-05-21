@@ -14,7 +14,7 @@ public enum ConsumableType
     Health,
     Hunger
 }
-
+[System.Serializable]
 public class ItemDataConsumable
 {
     public ConsumableType type;
@@ -31,10 +31,11 @@ public class ItemData : ScriptableObject
     public Sprite icon;
     public GameObject prefab;
 
+    [Header("Consumable")]
+    public ItemDataConsumable[] consumables;
+
     [Header("Stacking")]
     public bool canStack;
     public int maxStackAmount;
 
-    [Header("Consumable")]
-    public ItemDataConsumable[] consumables;
 }

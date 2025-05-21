@@ -16,6 +16,9 @@ MonoBehaviour:
   des: HP + 50
   type: 1
   icon: {fileID: 0}
-  prefab: {fileID: 0}
+  prefab: {fileID: 6822817922580347735, guid: 83faa38cd530eb94aa8d93f413237aa4, type: 3}
+  consumables:
+  - type: 0
+    value: 50
   canStack: 0
   maxStackAmount: 0

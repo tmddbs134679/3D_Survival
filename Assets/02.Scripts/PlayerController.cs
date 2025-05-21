@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,6 +24,9 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody rb;
 
+    public bool CanLook = true;
+    public Action inventroy;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -42,7 +46,11 @@ public class PlayerController : MonoBehaviour
 
     private void LateUpdate()
     {
-        CamLook();
+        if(CanLook)
+        {
+            CamLook();
+        }
+
     }
 
     void Move()
@@ -114,4 +122,19 @@ public class PlayerController : MonoBehaviour
         return false;
     }
 
+    public void OnInventory(InputAction.CallbackContext context)
+    {
+        if(context.phase == InputActionPhase.Started)
+        {
+            inventroy?.Invoke();
+            ToggleCursor();
+        }
+    }
+
+    void ToggleCursor()
+    {
+        bool toggle = Cursor.lockState == CursorLockMode.Locked;
+        Cursor.lockState = toggle ? CursorLockMode.None : CursorLockMode.Locked;
+        CanLook = !toggle;
+    }
 }
