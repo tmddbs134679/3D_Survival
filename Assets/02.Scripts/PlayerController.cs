@@ -90,17 +90,22 @@ public class PlayerController : MonoBehaviour
 
     bool IsGround()
     {
+        float rayLength = 0.2f; // 더 긴 거리로 설정
+        Vector3 originOffset = Vector3.down * 0.8f;// Collider 바깥으로 이동
+
         Ray[] rays = new Ray[4]
         {
-            new Ray(transform.position + (transform.forward * 0.2f) + (transform.up * 0.01f), Vector3.down),
-            new Ray(transform.position + (-transform.forward * 0.2f) + (transform.up * 0.01f), Vector3.down),
-            new Ray(transform.position + (transform.right * 0.2f) + (transform.up * 0.01f), Vector3.down),
-            new Ray(transform.position + (-transform.right * 0.2f) + (transform.up * 0.01f), Vector3.down),
+        new Ray(transform.position + originOffset + (transform.forward * 0.1f), Vector3.down),
+        new Ray(transform.position + originOffset + (-transform.forward * 0.1f), Vector3.down),
+        new Ray(transform.position + originOffset + (transform.right * 0.1f), Vector3.down),
+        new Ray(transform.position + originOffset + (-transform.right * 0.1f), Vector3.down),
         };
 
-        for(int i = 0; i < rays.Length; i++)
+        for (int i = 0; i < rays.Length; i++)
         {
-            if (Physics.Raycast(rays[i], 0.1f, groundLayerMask))
+            Debug.DrawRay(rays[i].origin, rays[i].direction * rayLength, Color.red, 1f);
+
+            if (Physics.Raycast(rays[i], rayLength, groundLayerMask))
             {
                 return true;
             }
@@ -108,4 +113,5 @@ public class PlayerController : MonoBehaviour
 
         return false;
     }
+
 }
