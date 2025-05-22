@@ -15,10 +15,24 @@ public enum ConsumableType
     Hunger,
     Speed
 }
+
+public enum EquipType
+{
+    Jump,
+    Speed
+
+}
 [System.Serializable]
 public class ItemDataConsumable
 {
     public ConsumableType type;
+    public float value;
+}
+
+[System.Serializable]
+public class ItemDataEquipable
+{
+    public EquipType type;
     public float value;
 }
 
@@ -38,5 +52,8 @@ public class ItemData : ScriptableObject
     [Header("Stacking")]
     public bool canStack;
     public int maxStackAmount;
+
+    [Header("Equipable")]
+    public ItemDataEquipable[] equipables;
 
 }

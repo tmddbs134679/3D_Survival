@@ -1,3 +1,4 @@
+using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -37,10 +38,17 @@ public class PlayerController : MonoBehaviour
     private bool isHanging = false;
     public Transform ledgeGrabPoint; // 손 위치 기준 (선택적)
 
+    [Header("View")]
+    private bool isTrans = true;
+    public Camera mainCam;
+    public Vector3 mainCamOffset;
+    public CinemachineFreeLook cinemachineCam;
+
     private void Awake()
     {
         stat = GetComponent<PlayerStat>();  
         rb = GetComponent<Rigidbody>();
+        mainCam.transform.localPosition = mainCamOffset;
     }
     // Start is called before the first frame update
     void Start()
@@ -213,6 +221,48 @@ public class PlayerController : MonoBehaviour
             transform.SetParent(wallTransform, true);
     
         }
+    }
+
+    public void OnCamera(InputAction.CallbackContext context)
+    {
+        if(context.phase == InputActionPhase.Started)
+        {
+            isTrans = !isTrans;
+            Transition(isTrans);
+
+        }
+    }
+
+    private void Transition(bool isView)
+    {
+       if(isView)
+       {
+            cinemachineCam.gameObject.SetActive(false);
+            mainCam.gameObject.transform.localPosition = mainCamOffset;
+            mainCam.transform.localRotation = Quaternion.Euler(Vector3.zero);
+        }
+       else
+       {
+            cinemachineCam.Follow = CharacterManager.Inst.Player.transform;
+            cinemachineCam.LookAt = CharacterManager.Inst.Player.transform;
+
+            // 2. 플레이어와 FPS 카메라 기준으로 회전 계산
+            Vector3 camForward =  mainCam.transform.transform.forward;
+            camForward.y = 0;
+            camForward.Normalize();
+
+            Vector3 playerForward = mainCam.transform.forward;
+            playerForward.y = 0;
+            playerForward.Normalize();
+
+            float signedAngle = Vector3.SignedAngle(playerForward, camForward, Vector3.up);
+            float normalized = Mathf.Repeat(signedAngle, 360f) / 360f;
+
+            // 3. 시야 정렬
+            cinemachineCam.m_XAxis.Value = normalized;
+            cinemachineCam.m_YAxis.Value = 0.5f;
+            cinemachineCam.gameObject.SetActive(true);
+       }
     }
 
     public void Knockback(Vector3 hitDirection, float force)

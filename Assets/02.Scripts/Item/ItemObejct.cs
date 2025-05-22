@@ -11,6 +11,7 @@ public interface IInteractable
 public class ItemObejct : MonoBehaviour, IInteractable
 {
     public ItemData data;
+    public bool IsEquipped;
     public string GetInteractPrompt()
     {
         string str = $"{data.displayName}\n{data.des}";

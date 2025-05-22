@@ -46,6 +46,8 @@ public class UIInventroy : MonoBehaviour
             slots[i].idx = i;
             slots[i].inventroy = this;
         }
+
+        ClearSelectedWindow();
     }
 
     // Update is called once per frame
@@ -65,6 +67,8 @@ public class UIInventroy : MonoBehaviour
         equipBtn.SetActive(false);
         unEquipBtn.SetActive(false);
         dropBtn.SetActive(false);
+
+
 
     }
 
@@ -115,6 +119,7 @@ public class UIInventroy : MonoBehaviour
 
     void UpdataUI()
     {
+
         for(int i =0; i < slots.Length; i++)
         {
             if (slots[i].item != null)
@@ -125,6 +130,7 @@ public class UIInventroy : MonoBehaviour
             {
                 slots[i].Clear();
             }
+
         }
     }
 
@@ -181,7 +187,7 @@ public class UIInventroy : MonoBehaviour
         useBtn.SetActive(selectedItem.type == ItemType.Consumable);
         equipBtn.SetActive(selectedItem.type == ItemType.Eqipable && !slots[idx].equpped);
         unEquipBtn.SetActive(selectedItem.type == ItemType.Eqipable && slots[idx].equpped);
-        dropBtn.SetActive(true);
+        dropBtn.SetActive(selectedItem.type == ItemType.Eqipable && !slots[idx].equpped);
     }
 
     public void OnUseBtn()
@@ -200,14 +206,13 @@ public class UIInventroy : MonoBehaviour
                         playerCondition.Eat(selectedItem.consumables[i].value);
                         break;
                     case ConsumableType.Speed:
-                        playerController.stat.UseMP(selectedItem.consumables[i].value);
+                        playerController.stat.ChangeSpeed(selectedItem.consumables[i].value);
                         break;
                 }
             }
         }
 
         RemoveSelectedItem();
-
     }
 
     public void OnDropBtn()
@@ -229,6 +234,28 @@ public class UIInventroy : MonoBehaviour
         }
 
         UpdataUI();
+    }
+
+    public void OnEquipBtn(bool b)
+    {
+    
+        if (selectedItem.type == ItemType.Eqipable)
+        {
+            for (int i = 0; i < selectedItem.equipables.Length; i++)
+            {
+
+                float value = selectedItem.equipables[i].value * (b ? 1 : -1);
+                slots[selectItemIdx].equpped = b;
+
+                switch (selectedItem.equipables[i].type)
+                {
+                    case EquipType.Speed:
+                        playerController.stat.StatUp(value);
+                        break;
+                }
+            }
+        }
+        SelectItem(selectItemIdx);
     }
  
 }

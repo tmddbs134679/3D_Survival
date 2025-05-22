@@ -20,7 +20,7 @@ public class PlayerStat : MonoBehaviour
         
     }
 
-    public void UseMP(float value)
+    public void ChangeSpeed(float value)
     {
         StartCoroutine(SpeedUp(value));
     }
@@ -34,5 +34,12 @@ public class PlayerStat : MonoBehaviour
         yield return new WaitForSeconds(10f);
 
         moveSpeed = prevSpeed;
+    }
+
+
+    public void StatUp(float value)
+    {
+        //일단 스피드만
+        moveSpeed += value;
     }
 }
