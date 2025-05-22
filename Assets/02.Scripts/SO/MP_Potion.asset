@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8498afbfed138484fbd4b7734377f16c, type: 3}
-  m_Name: Potion
+  m_Name: MP_Potion
   m_EditorClassIdentifier: 
-  displayName: HP_Potion
-  des: HP + 50
+  displayName: MP_Potion
+  des: Speed + 5
   type: 1
   icon: {fileID: 0}
   prefab: {fileID: 6822817922580347735, guid: 83faa38cd530eb94aa8d93f413237aa4, type: 3}
   consumables:
-  - type: 0
-    value: 50
+  - type: 2
+    value: 5
   canStack: 0
   maxStackAmount: 0

@@ -45,4 +45,7 @@ public class PlayerCondition : MonoBehaviour
     {
         hunger.Add(hungerHealth);
     }
+
+ 
+
 }

@@ -12,7 +12,8 @@ public enum ItemType
 public enum ConsumableType
 {
     Health,
-    Hunger
+    Hunger,
+    Speed
 }
 [System.Serializable]
 public class ItemDataConsumable

@@ -199,6 +199,9 @@ public class UIInventroy : MonoBehaviour
                     case ConsumableType.Hunger:
                         playerCondition.Eat(selectedItem.consumables[i].value);
                         break;
+                    case ConsumableType.Speed:
+                        playerController.stat.UseMP(selectedItem.consumables[i].value);
+                        break;
                 }
             }
         }

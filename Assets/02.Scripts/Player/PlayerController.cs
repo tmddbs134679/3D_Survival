@@ -6,8 +6,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Movement")]
-    public float moveSpeed;
+    public PlayerStat stat;
     private Vector2 curMovementInput;
 
     public LayerMask groundLayerMask;
@@ -40,6 +39,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        stat = GetComponent<PlayerStat>();  
         rb = GetComponent<Rigidbody>();
     }
     // Start is called before the first frame update
@@ -69,7 +69,7 @@ public class PlayerController : MonoBehaviour
     void Move()
     {
         Vector3 dir = transform.forward * curMovementInput.y + transform.right * curMovementInput.x;
-        dir *= moveSpeed;
+        dir *= stat.moveSpeed;
         dir.y = rb.velocity.y;
         rb.velocity = dir;  
     }
@@ -215,7 +215,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
+    public void Knockback(Vector3 hitDirection, float force)
+    {
+        hitDirection.Normalize();
+        hitDirection.y = 0;
+        rb.velocity = Vector3.zero; 
+        rb.AddForce(hitDirection * force, ForceMode.Impulse);
+    }
 
 
 }
